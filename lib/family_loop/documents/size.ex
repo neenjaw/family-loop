@@ -6,7 +6,8 @@ defmodule FamilyLoop.Documents.Size do
     result = size / :math.pow(1024, exp)
     result =
       case exp do
-        e when e in [0, 1] -> result
+        0 -> result
+        1 -> result |> trunc()
         _ -> result |> Float.round(2)
       end
 

@@ -12,12 +12,14 @@ defmodule FamilyLoopWeb.UploadController do
 
     case Documents.create_upload_from_plug_upload(upload) do
       {:ok, _upload} ->
-        put_flash(conn, :info, "file uploaded correctly")
-        redirect(conn, to: Routes.upload_path(conn, :index))
+        conn
+        |> put_flash(:info, "file uploaded correctly") |> IO.inspect(label: "15")
+        |> redirect(to: Routes.upload_path(conn, :index))
 
       {:error, reason} ->
-        put_flash(conn, :error, "error uploading file #{inspect(reason)}")
-        render(conn, "new.html")
+        conn
+        |> put_flash(:error, "error uploading file #{inspect(reason)}")
+        |> render("new.html")
     end
   end
 

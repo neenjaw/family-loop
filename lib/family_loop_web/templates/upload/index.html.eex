@@ -18,5 +18,8 @@
       </tr>
     <% end %>
 
+
   </tbody>
 </table>
+
+<a href="<%= Routes.upload_path(@conn, :new) %>">Upload Another</a>
