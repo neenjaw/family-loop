@@ -16,6 +16,7 @@ defmodule FamilyLoopWeb.Router do
   scope "/", FamilyLoopWeb do
     pipe_through :browser
 
+    resources "/uploads", UploadController, only: [:index, :new, :show, :create]
     get "/", PageController, :index
   end
 

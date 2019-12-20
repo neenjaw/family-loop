@@ -9,3 +9,6 @@ docker container run --name fam_loop-pg -p 5432:5432 \
   -e POSTGRESUSER=postgres \
   -v family_loop-postgres:/var/lib/postgresql/data \
   -d postgres:12.1-alpine
+
+# psql
+# docker container exec -it fam_loop-pg psql -U postgres
