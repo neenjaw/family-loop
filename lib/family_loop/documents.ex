@@ -20,27 +20,35 @@ defmodule FamilyLoop.Documents do
       with {:ok, %File.Stat{size: size}} <- File.stat(tmp_path),
         extname <- Path.extname(filename),
         datepath <- Upload.get_date_path(),
-        dir <- Upload.local_dir(datepath),
-        path <- Path.join(dir, uuid),
+        local_datepath <- Upload.localize_path(datepath),
+        path <- Upload.uuid_path(datepath, uuid),
+        local_path <- Upload.localize_path(path),
 
-        :ok <- File.mkdir_p(dir),
+        :ok <- File.mkdir_p(local_datepath),
 
         :ok <- File.cp(
           tmp_path,
-          path
+          local_path
         ),
 
         {:ok, upload} <-
-          %Upload{} |> Upload.changeset(%{
+          %Upload{}
+          |> Upload.changeset(%{
             uuid: uuid,
             filename: filename,
             file_extension: extname,
             content_type: content_type,
             hash: hash,
             size: size,
-            path: path
+            path: datepath
           })
-          |> Repo.insert() do
+          |> Repo.insert(),
+
+        {:ok, upload} <-
+          upload
+          |> Upload.create_thumbnail()
+          |> Repo.update()
+      do
         {:ok, upload}
       else
         {:error, _} = error -> error
