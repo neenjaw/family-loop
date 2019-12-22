@@ -17,7 +17,13 @@ defmodule FamilyLoopWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :index
+
+    # Handle each upload as a document
     resources "/uploads", UploadController, only: [:index, :new, :show, :create]
+
+    # get just the asset / thumbnail
+    get "/asset/:uuid", UploadController, :asset, as: "asset"
+    get "/asset/:uuid/thumbnail", UploadController, :thumbnail, as: "thumbnail"
   end
 
   # Other scopes may use custom stacks.
