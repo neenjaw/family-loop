@@ -43,7 +43,6 @@ defmodule FamilyLoopWeb.UploadController do
 
   def thumbnail(conn, %{"uuid" => uuid}) do
     upload = Repo.get_by(Upload, uuid: uuid)
-    |> IO.inspect(label: "46")
 
     cond do
       upload.thumbnail? ->

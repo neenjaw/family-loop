@@ -1,17 +1,29 @@
 <table class="table">
   <thead>
+    <th>Icon</th>
     <th>ID</th>
+    <th>UUID</th>
     <th>Filename</th>
+    <th>Path</th>
     <th>Type</th>
-    <th>Time</th>
+    <th>Created</th>
     <th>Size</th>
   </thead>
   <tbody>
 
     <%= for upload <- @uploads do %>
       <tr>
+        <td>
+          <%= if upload.thumbnail? do
+            img_tag Routes.thumbnail_path(@conn, :thumbnail, upload.uuid)
+          else
+            img_tag Routes.static_path(@conn, "/images/icons/#{upload.file_extension |> String.trim_leading(".")}.png")
+          end %>
+        </td>
         <td><%= upload.id %></td>
+        <td><%= upload.uuid %></td>
         <td><%= upload.filename %></td>
+        <td><%= upload.path %></td>
         <td><%= upload.content_type %></td>
         <td><%= upload.inserted_at %></td>
         <td><%= FamilyLoop.Documents.Size.humanize(upload.size) %></td>

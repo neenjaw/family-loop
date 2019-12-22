@@ -76,6 +76,15 @@ defmodule FamilyLoop.Documents.Upload do
     end
   end
 
+  def pdf_thumbnail(pdf_path, thumb_path) do
+    args = ~w(-density 300 -resize 100x100 #{pdf_path}[0] #{thumb_path})
+
+    case System.cmd("convert", args, stderr_to_stdout: true) do
+      {_, 0} -> {:ok, thumb_path}
+      {reason, _} -> {:error, reason}
+    end
+  end
+
   def create_thumbnail(%__MODULE__{
     content_type: "image/" <> _image_type
   } = upload) do
@@ -86,7 +95,17 @@ defmodule FamilyLoop.Documents.Upload do
     changeset(upload, %{thumbnail?: true})
   end
 
-  def create_thumbail(%__MODULE__{} = upload) do
+  def create_thumbnail(%__MODULE__{
+    content_type: "application/pdf"
+  } = upload) do
+    original_path = uuid_path(upload.path, upload.uuid) |> localize_path()
+    thumb_path = thumbnail_path(upload.path, upload.uuid) |> localize_path()
+    {:ok, _} = pdf_thumbnail(original_path, thumb_path)
+
+    changeset(upload, %{thumbnail?: true})
+  end
+
+  def create_thumbnail(%__MODULE__{} = upload) do
     changeset(upload, %{})
   end
 end
