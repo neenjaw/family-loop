@@ -92,7 +92,7 @@ defmodule FamilyLoop.Documents.Upload do
     thumb_path = thumbnail_path(upload.path, upload.uuid) |> localize_path()
     {:ok, _} = mogrify_thumbnail(original_path, thumb_path)
 
-    changeset(upload, %{thumbnail?: true})
+    changeset(upload, %{thumbnail?: true, thumb_content_type: upload.content_type})
   end
 
   def create_thumbnail(%__MODULE__{
@@ -100,9 +100,9 @@ defmodule FamilyLoop.Documents.Upload do
   } = upload) do
     original_path = uuid_path(upload.path, upload.uuid) |> localize_path()
     thumb_path = thumbnail_path(upload.path, upload.uuid) |> localize_path()
-    {:ok, _} = pdf_thumbnail(original_path, thumb_path)
+    {:ok, _} = pdf_thumbnail(original_path, "jpg:" <> thumb_path)
 
-    changeset(upload, %{thumbnail?: true})
+    changeset(upload, %{thumbnail?: true, thumb_content_type: "image/jpeg"})
   end
 
   def create_thumbnail(%__MODULE__{} = upload) do
