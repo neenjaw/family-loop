@@ -1,0 +1,14 @@
+<div id="upload__drop-area">
+  <%= form_for @conn,
+              Routes.upload_path(@conn, :create),
+              [multipart: true, class: "upload__form"],
+              fn f -> %>
+    <p>
+      Upload multiple files with the file dialog or by dragging and dropping
+      images onto the dashed region
+    </p>
+    <%= file_input f, :files, [class: "form-control", multiple: true] %>
+    <%= label f, :files, "Select some files" %>
+    <%# onchange="handleFiles(this.files)"> %>
+  <% end %>
+</div>

@@ -18,7 +18,7 @@ defmodule FamilyLoop.Documents do
 
     Repo.transaction fn ->
       with {:ok, %File.Stat{size: size}} <- File.stat(tmp_path),
-        extname <- Path.extname(filename),
+        extname <- Path.extname(filename) |> String.trim_leading("."),
         datepath <- Upload.get_date_path(),
         local_datepath <- Upload.localize_path(datepath),
         path <- Upload.uuid_path(datepath, uuid),
