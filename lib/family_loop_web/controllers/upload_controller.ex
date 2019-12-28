@@ -23,6 +23,12 @@ defmodule FamilyLoopWeb.UploadController do
     end
   end
 
+  def index(conn, %{"upload" => "success"}) do
+    conn
+    |> put_flash(:info, "file(s) uploaded correctly")
+    |> redirect(to: Routes.upload_path(conn, :index))
+  end
+
   def index(conn, _params) do
     uploads = Documents.list_uploads()
     render(conn, "index.html", uploads: uploads)

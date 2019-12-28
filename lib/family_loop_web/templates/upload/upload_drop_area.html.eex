@@ -7,8 +7,9 @@
       Upload multiple files with the file dialog or by dragging and dropping
       images onto the dashed region
     </p>
-    <%= file_input f, :files, [class: "form-control", multiple: true] %>
-    <%= label f, :files, "Select some files" %>
+    <%# <%= file_input f, :files, [class: "form-control", multiple: true] %>
+    <%# <%= label f, :files, "Select some files" %>
     <%# onchange="handleFiles(this.files)"> %>
   <% end %>
+  <div class="upload__gallery"></div>
 </div>
